@@ -4,24 +4,24 @@ A machine learning project that handles missing data in medical datasets using M
 
 ## What This Does
 
-Medical datasets often have missing values - sometimes 20-30% of the data is incomplete because tests weren't done, equipment failed, or records are incomplete. Most basic approaches like filling with the mean don't work well because they ignore relationships between features and don't tell you how confident the imputation is.
+Medical datasets often have missing values. Many times 20-30% of the data is incomplete because tests weren't done, equipment failed, or records are incomplete. Most basic approaches like filling with the mean don't work well because they ignore relationships between features and don't tell you how confident the imputation is.
 
-This project uses MICE to create multiple versions of the complete dataset, then measures how different those versions are to estimate uncertainty. I also implemented "Rubin's Rules" which is a proper way to combine predictions from models trained on each imputed version.
+This project uses MICE to create multiple versions of the complete dataset, then measures how different those versions are to estimate uncertainty. "Rubin's Rules" was implemented, which is a proper way to combine predictions from models trained on each imputed version.
 
 I tested it on the Pima Indians Diabetes dataset and got a 2.34% improvement in AUC score compared to basic mean imputation (0.8226). The system also outputs uncertainty scores for each imputed value so you know which predictions to trust.
 
 ## Results
 
-**Dataset:** Pima Indians Diabetes (768 patients, 8 features like glucose, blood pressure, BMI)
+Dataset: Pima Indians Diabetes (768 patients, 8 features like glucose, blood pressure, BMI)
 
-**Missing data:** 30% simulated 
+Missing data: 30% simulated 
 
-**Performance:**
+Performance:
 - Simple mean imputation: 0.8226 AUC
 - MICE with Rubin's Rules: 0.8419 AUC
 - Improvement: +2.34%
 
-The uncertainty scores ranged from 0.0006 to 0.8875, with an average of 0.1054 for imputed cells. Higher uncertainty means the algorithm was less confident about what the missing value should be.
+The uncertainty scores ranged from 0.0006 to 0.8875, with an average of 0.1054 for imputed cells. 
 
 ## How It Works
 
@@ -35,7 +35,7 @@ MICE works by going through each feature with missing values and predicting them
 
 ### 3. Measuring Uncertainty
 
-For each missing value, I calculated the standard deviation across the 5 imputations. If all 5 versions agree on approximately the same value, the uncertainty is low. If they disagree a lot, the uncertainty is high and we probably shouldn't trust that imputation as much.
+For each missing value, I calculated the standard deviation across the 5 imputations. If all 5 versions agree on approximately the same value, the uncertainty is low. If they disagree a lot, the uncertainty is high.
 
 ### 4. Testing with Machine Learning
 
@@ -49,20 +49,18 @@ cd impute-pro
 pip install -r requirements.txt
 ```
 
-You need Python 3.8 or newer. The requirements.txt includes numpy, pandas, matplotlib, seaborn, scikit-learn, and xgboost.
+Python 3.8 required. The requirements.txt includes numpy, pandas, matplotlib, seaborn, scikit-learn, and xgboost.
 
 ## Usage
-
-Just run the main script:
 
 ```bash
 python impute_pro.py
 ```
 
-It takes about 20-30 seconds and creates two files:
+Creates two files:
 
-1. `final_imputed_data_with_uncertainty.csv` - the imputed data with flags and uncertainty scores
-2. `impute_pro_results.png` - visualizations showing the results
+1. final_imputed_data_with_uncertainty.csv - the imputed data with flags and uncertainty scores
+2. impute_pro_results.png - visualizations showing the results
 
 The CSV has 24 columns for the 8 features:
 - First 8 columns: the actual imputed values
@@ -71,9 +69,9 @@ The CSV has 24 columns for the 8 features:
 
 ## What I Learned
 
-This project taught me a lot about handling real-world data issues. Simple approaches like mean imputation seem okay but they can hurt model performance and give you no idea when to be cautious about predictions. MICE is more complex but gives better results and the uncertainty estimates are really useful.
+Simple approaches like mean imputation seem okay but they can hurt model performance and give you no idea when to be cautious about predictions. MICE is more complex but gives better results and the uncertainty estimates are really useful.
 
-The 2.34% improvement MIGHT seem small but in medical applications even small gains matter. More importantly, knowing which predictions are uncertain is valuable. In a clinical setting you'd want to flag those cases for human review or additional testing.
+The 2.34% improvement might seem small but in medical applications even small gains matter. More importantly, knowing which predictions are uncertain is valuable. In a real clinical setting you'd want to flag those cases for human review or additional testing.
 
 I also learned about proper statistical methods (Rubin's Rules) for combining multiple imputed datasets, which is something I hadn't seen in my coursework before. The implementation was challenging but the scikit-learn IterativeImputer made it manageable.
 
@@ -81,7 +79,7 @@ I also learned about proper statistical methods (Rubin's Rules) for combining mu
 
 ```
 impute-pro/
-├── impute_pro.pynb
+├── impute_pro.py
 ├── README.md
 ├── requirements.txt
 ├── LICENSE

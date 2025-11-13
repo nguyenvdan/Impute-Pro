@@ -1,4 +1,4 @@
-# Impute-Pro: Missing Data Imputation for Medical Datasets
+# Missing Data Imputation Pipeline for Medical Datasets
 
 A machine learning project that handles missing data in medical datasets using MICE (Multiple Imputation by Chained Equations). Built as part of learning data science and healthcare AI applications.
 
